@@ -404,19 +404,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void delay(final int milliseconds) {
         runOnUiThread( new Runnable() {
-            @Override
-            public void run() {
-                final Handler handler = new Handler();
-                handler.postDelayed( new Runnable() {
-                    @Override
-                    public void run() {
-                        timeOff( null );
+        @Override
+        public void run() {
+            final Handler handler = new Handler();
+            handler.postDelayed( new Runnable() {
+                @Override
+                public void run() {
+                    timeOff( null );
 
-                    }
-                }, milliseconds );
-            }
-        } );
-    }
+                }
+            }, milliseconds );
+        }
+    } );
+}
 
 
     public void delayChamaLoad(final int milliseconds) {
