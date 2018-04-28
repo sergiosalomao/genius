@@ -53,7 +53,6 @@
             android:id="@+id/txtSequenceGray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:fontFamily="monospace"
@@ -65,7 +64,6 @@
             android:textSize="37sp"
             android:textStyle="bold"
             android:typeface="monospace"
-            app:layout_constraintBottom_toTopOf="@+id/txtGameOver"
             app:layout_constraintEnd_toEndOf="@+id/imgBg"
             app:layout_constraintStart_toStartOf="@+id/imgBg"
             app:layout_constraintTop_toBottomOf="@+id/info" />
@@ -74,7 +72,6 @@
             android:id="@+id/txtSequenceGreen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:fontFamily="monospace"
@@ -85,7 +82,6 @@
             android:textSize="37sp"
             android:textStyle="bold"
             android:typeface="monospace"
-            app:layout_constraintBottom_toTopOf="@+id/txtGameOver"
             app:layout_constraintEnd_toEndOf="@+id/imgBg"
             app:layout_constraintStart_toStartOf="@+id/imgBg"
             app:layout_constraintTop_toBottomOf="@+id/info" />
@@ -109,21 +105,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/txtScores" />
-
-        <ImageView
-            android:id="@+id/imgWin"
-            android:layout_width="wrap_content"
-            android:layout_height="82dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnStartGame"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/txtGameOver"
-            app:layout_constraintVertical_bias="0.765"
-            app:srcCompat="@drawable/youwin" />
 
         <TextView
             android:id="@+id/textView"
@@ -155,38 +136,19 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="4dp" />
 
-        <TextView
-            android:id="@+id/txtGameOver"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
-            android:fontFamily="casual"
-            android:text="GAME OVER"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imgBg" />
-
         <ImageButton
             android:id="@+id/btnStartGame"
             android:layout_width="105dp"
             android:layout_height="73dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="168dp"
             android:background="@drawable/start"
             android:onClick="startGame"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtGameOver" />
+            app:layout_constraintTop_toBottomOf="@+id/info" />
 
     </android.support.constraint.ConstraintLayout>
 

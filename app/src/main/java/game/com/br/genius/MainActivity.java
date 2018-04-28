@@ -2,10 +2,13 @@ package game.com.br.genius;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.SyncStateContract;
 import android.renderscript.Script;
 import android.support.constraint.Constraints;
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     /*Declared global variables*/
 
     /*texts*/
-    TextView txtInfo, txtGameover, txtScores, txtColorSelected,txtSequenceGreen,txtSequenceGray;
+    TextView txtInfo, txtScores, txtColorSelected, txtSequenceGreen, txtSequenceGray;
 
     /*Sound*/
     MediaPlayer beepclick, beepblink, risada;
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnStartGame;
 
     /*images*/
-    ImageView imgBg, imgWin;
+    ImageView imgBg;
 
     /*animations*/
     Animation fadeInImgBg, fadeOutImgBg, fadeInStartBtn;
@@ -85,13 +88,10 @@ public class MainActivity extends AppCompatActivity {
         /*Set variables images*/
         imgBg = findViewById( R.id.imgBg );
         imgBg.setVisibility( View.INVISIBLE );
-        imgWin = findViewById( R.id.imgWin );
-        imgWin.setVisibility( View.INVISIBLE );
 
         /*Set variables texts*/
         txtColorSelected = findViewById( R.id.txtPosicao );
         txtScores = findViewById( R.id.txtScores );
-        txtGameover = findViewById( R.id.txtGameOver );
         txtInfo = findViewById( R.id.info );
         txtSequenceGray = findViewById( R.id.txtSequenceGray );
         txtSequenceGreen = findViewById( R.id.txtSequenceGreen );
@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
         /*Hide objects*/
         txtInfo.setVisibility( View.INVISIBLE );
-        txtGameover.setVisibility( View.INVISIBLE );
 
         /*Show objects*/
         imgBg.setVisibility( View.VISIBLE );
@@ -217,11 +216,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     /*enable all buttons */
                                     onButtons();
-                                    txtSequenceGreen.setText( txtSequenceGreen.getText()+ " ..........");
+                                    txtSequenceGreen.setText( txtSequenceGreen.getText() + " .........." );
 
                                     /*play sound */
                                     playAudio( beepblink );
-
 
                                     introductionStarting = false;/*unlock click */
                                     txtColorSelected.setText( "All ready!" );
@@ -244,8 +242,6 @@ public class MainActivity extends AppCompatActivity {
         if (introductionStarting == false) {
             /*Hide objects */
             btnStartGame.setVisibility( View.INVISIBLE );
-            txtGameover.setVisibility( View.INVISIBLE );
-            imgWin.setVisibility( View.INVISIBLE );
 
             /*Show objects*/
             imgBg.setVisibility( View.VISIBLE );
@@ -280,8 +276,10 @@ public class MainActivity extends AppCompatActivity {
     public void executaclick() {
         if (active) {
             /*sequence mark*/
-            for (int i = 0; i<click ;i++){
-                if (click == i){txtSequenceGreen.setText( txtSequenceGreen.getText()+ ".");}
+            for (int i = 0; i < click; i++) {
+                if (click == i) {
+                    txtSequenceGreen.setText( txtSequenceGreen.getText() + "." );
+                }
             }
 
             playAudio( beepclick );
@@ -361,21 +359,19 @@ public class MainActivity extends AppCompatActivity {
     public void gameover() {
         /*Hide*/
         txtInfo.setVisibility( View.INVISIBLE );
-        txtGameover.setVisibility( View.VISIBLE );
         btnStartGame.setVisibility( View.VISIBLE );
         txtColorSelected.setVisibility( View.INVISIBLE );
 
         /*Actions*/
-        txtInfo.setText( "You loser hahaha!" );
         active = false; /*block clicks*/
-        imgBg.startAnimation( fadeOutImgBg );
         clickcont = 0;
         seq = 0;
         listClicks.clear();
         listSeq.clear();
         click = 0;
+        saveHighScore("GAME OVER"); //save
+        StartHighScore(); //show highscore
         scores = 0;
-
 
         fadeOutImgBg.setAnimationListener( new Animation.AnimationListener() {
             @Override
@@ -389,7 +385,6 @@ public class MainActivity extends AppCompatActivity {
                 imgBg.setVisibility( View.INVISIBLE );
                 btnStartGame.setVisibility( View.VISIBLE );
                 txtColorSelected.setVisibility( View.INVISIBLE );
-                txtGameover.setVisibility( View.VISIBLE );
                 txtInfo.setVisibility( View.INVISIBLE );
             }
 
@@ -401,22 +396,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public void delay(final int milliseconds) {
         runOnUiThread( new Runnable() {
-        @Override
-        public void run() {
-            final Handler handler = new Handler();
-            handler.postDelayed( new Runnable() {
-                @Override
-                public void run() {
-                    timeOff( null );
+            @Override
+            public void run() {
+                final Handler handler = new Handler();
+                handler.postDelayed( new Runnable() {
+                    @Override
+                    public void run() {
+                        timeOff( null );
 
-                }
-            }, milliseconds );
-        }
-    } );
-}
+                    }
+                }, milliseconds );
+            }
+        } );
+    }
 
 
     public void delayChamaLoad(final int milliseconds) {
@@ -429,8 +423,10 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         /*sequence mark*/
                         txtSequenceGreen.setTextColor( Color.GREEN );
-                        for (int i = 0; i<array.length ;i++){
-                            if (seq == i){txtSequenceGreen.setText( txtSequenceGreen.getText()+ ".");}
+                        for (int i = 0; i < array.length; i++) {
+                            if (seq == i) {
+                                txtSequenceGreen.setText( txtSequenceGreen.getText() + "." );
+                            }
                         }
 
                         /*Script*/
@@ -462,6 +458,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     int contador;
+
     public void loadList() {
 
         new Thread() {
@@ -536,7 +533,6 @@ public class MainActivity extends AppCompatActivity {
     public void endGame() {
         /*Show*/
         active = false;
-        imgWin.setVisibility( View.VISIBLE );
         btnStartGame.setVisibility( View.VISIBLE );
 
         /*Hide*/
@@ -550,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
         listClicks.clear();
         listSeq.clear();
         click = 0;
-        scores = 0;
+
 
         fadeOutImgBg.setAnimationListener( new Animation.AnimationListener() {
             @Override
@@ -564,7 +560,6 @@ public class MainActivity extends AppCompatActivity {
                 imgBg.setVisibility( View.INVISIBLE );
                 btnStartGame.setVisibility( View.VISIBLE );
                 txtColorSelected.setVisibility( View.INVISIBLE );
-                imgWin.setVisibility( View.VISIBLE );
                 txtInfo.setVisibility( View.INVISIBLE );
             }
 
@@ -574,5 +569,33 @@ public class MainActivity extends AppCompatActivity {
             }
         } );
 
+
+        saveHighScore("YOU WIN!!"); //save
+        scores = 0;
+        StartHighScore(); //show highscore
     }
+
+
+    public void saveHighScore(String screentitle) {
+        SharedPreferences arquivoSalvo = getSharedPreferences( "user_preferences.xml", 0 );
+        SharedPreferences.Editor manipuladorArquivo;
+
+        manipuladorArquivo = arquivoSalvo.edit();
+
+        if (arquivoSalvo.getInt( "highscore", 0 ) < scores) {
+            manipuladorArquivo.putInt( "highscore", scores );
+        }
+
+        manipuladorArquivo.putInt( "lastscore", scores );
+        manipuladorArquivo.putString( "screentitle", screentitle );
+        manipuladorArquivo.apply();
+    }
+
+
+    public void StartHighScore() {
+        Intent intent = new Intent( MainActivity.this, HighScore.class );
+        startActivity( intent );
+    }
+
+
 }
